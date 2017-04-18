@@ -7,8 +7,11 @@ msiexec /qb /i C:\gmetritmp\blender-2.78c-windows64.msi
 ::
 echo %PATH% > user_path.bak
 echo "Adding python and blender to PATH"
-set PATH=%PATH%;C:\Python27\Scripts;C:\Python27;C:\Program Files\Blender Foundation\Blender
+set NEWPATH=C:\Python27\Scripts;C:\Python27;C:\Program Files\Blender Foundation\Blender
+set PATH=%PATH%%NEWPATH%
 setx PATH "%PATH%"
+::set pathkey="HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment"
+::for /f "skip=2 tokens=3*" %a in ('reg query %pathkey% /v PATH') do @if [%b]==[] ( @setx PATH "%~a;%NEWPATH%" ) else ( @setx PATH "%~a %~b;%NEWPATH%" )
 ::
 pip install cube2sphere
 pip install sphere2cube
